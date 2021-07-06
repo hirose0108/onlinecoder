@@ -1,0 +1,38 @@
+<html lang="ja" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,user-scalable=yes,initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <title>Online Coder</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta property="og:title" content="">
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/no-script">
+  </noscript>
+</head>
+<body>
+<div class="m-container">
+  <main class="m-login-main">
+    <main class="m-login-section">
+      <div class="m-login-section-login">
+        <form th:action="@{/basic/compile}" method="post">
+          <div class="m-login-login">
+            <label>
+              <textarea name="code" class="inline-code" cols="200" rows="20">[[${code}]]</textarea>
+            </label>
+          </div>
+          <input type="submit" value="compile"/>
+          <div class="m-login-login">
+            <label>
+              <textarea readonly name="code" class="inline-code" cols="200" rows="10">[[${result}]]</textarea>
+            </label>
+          </div>
+        </form>
+      </div>
+    </main>
+  </main>
+</div>
+</body>
+</html>

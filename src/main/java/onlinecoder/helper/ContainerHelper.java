@@ -25,34 +25,30 @@ import onlinecoder.utils.PortUtils;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class ContainerHelper {
-  private final DockerClient docker;
-  private final String containerId;
-  private final ContainerInfo containerInfo;
+public abstract class ContainerHelper {
+  protected final DockerClient docker;
+  protected final String[] ports;
+  protected final HostConfig hostConfig;
+  protected final String containerId;
+  protected final ContainerInfo containerInfo;
 
   public ContainerHelper() throws DockerCertificateException, IOException, DockerException, InterruptedException {
     this.docker = DefaultDockerClient.fromEnv().build();
-
     int portNum = PortUtils.findRandomAvailablePort();
-    String[] ports = { String.valueOf(portNum) };
+    this.ports = new String[]{String.valueOf(portNum)};
     Map<String, List<PortBinding>> portBindings = new HashMap<>();
     for (String port : ports) {
       List<PortBinding> hostPorts = new ArrayList<>();
       hostPorts.add(PortBinding.of("0.0.0.0", port));
       portBindings.put(port, hostPorts);
     }
-
-    HostConfig hostConfig = HostConfig.builder().portBindings(portBindings).build();
-    ContainerConfig containerConfig = ContainerConfig.builder()
-            .hostConfig(hostConfig)
-            .image("adoptopenjdk/openjdk8:alpine").exposedPorts(ports)
-            .cmd("sh", "-c", "while :; do sleep 1; done")
-            .build();
-
-    ContainerCreation creation = docker.createContainer(containerConfig);
+    ContainerCreation creation = docker.createContainer(createConfig());
+    this.hostConfig = HostConfig.builder().portBindings(portBindings).build();
     this.containerId = creation.id();
-    this.containerInfo = docker.inspectContainer(this.containerId);
+    this.containerInfo = docker.inspectContainer(containerId);
   }
+
+  public abstract ContainerConfig createConfig();
 
   public void startContainer() throws DockerException, InterruptedException {
     this.docker.startContainer(this.containerId);
@@ -75,12 +71,12 @@ public class ContainerHelper {
   }
 
   public String execCompile(String className) throws DockerException, InterruptedException {
-    String execCommand = String.format("javac /tmp/%s.java", className);
+    String execCommand = String.format("javac -classpath /tmp:postgresql-42.2.21.jar /tmp/%s.java", className);
     return this.execInContainer(execCommand);
   }
 
   public String execCompiledCode(String className) throws DockerException, InterruptedException {
-    String execCommand = String.format("java -classpath /tmp %s", className);
+    String execCommand = String.format("java -classpath /tmp:postgresql-42.2.22.jar %s", className);
     return this.execInContainer(execCommand);
   }
 

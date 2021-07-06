@@ -1,0 +1,66 @@
+<html lang="ja" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,user-scalable=yes,initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <title>Online Coder</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta property="og:title" content="">
+  <script th:src="@{/js/yetii-min.js}"></script>
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/no-script">
+  </noscript>
+</head>
+<body>
+
+<div class="m-container">
+  <main class="m-login-main">
+    <main class="m-login-section">
+      <div class="m-login-section-login">
+        <form th:action="@{/db/compile}" method="post">
+          <div id="tab-container-1">
+            <ul id="tab-container-1-nav">
+              <li><a href="#tab1">Main.java</a></li>
+              <li><a href="#tab2">Dept.java</a></li>
+              <li><a href="#tab3">DeptDAO.java</a></li>
+            </ul>
+            <div class="tab" id="tab1">
+              <h2>Main.java</h2>
+              <label>
+                <textarea name="main" class="inline-code" cols="200" rows="20">[[${main}]]</textarea>
+              </label>
+            </div>
+            <div class="tab" id="tab2">
+              <h2>Dept.java</h2>
+              <label>
+                <textarea name="dept" class="inline-code" cols="200" rows="20">[[${dept}]]</textarea>
+              </label>
+            </div>
+            <div class="tab" id="tab3">
+              <h2>DeptDAO.java</h2>
+              <label>
+                <textarea name="deptdao" class="inline-code" cols="200" rows="20">[[${deptdao}]]</textarea>
+              </label>
+            </div>
+
+            <input type="submit" value="compile"/>
+            <div class="m-login-login">
+              <label>
+                <textarea readonly name="code" class="inline-code" cols="200" rows="10">[[${result}]]</textarea>
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+  </main>
+</div>
+<script type="text/javascript">
+  var tabber1 = new Yetii({
+                            id: 'tab-container-1'
+                          });
+</script>
+</body>
+</html>

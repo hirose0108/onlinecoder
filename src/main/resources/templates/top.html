@@ -17,19 +17,8 @@
       <main class="m-login-main">
         <main class="m-login-section">
           <div class="m-login-section-login">
-            <form th:action="@{compile}" method="post">
-              <div class="m-login-login">
-                <label>
-                  <textarea name="code" class="inline-code" cols="200" rows="20">[[${code}]]</textarea>
-                </label>
-              </div>
-              <input type="submit" value="compile"/>
-              <div class="m-login-login">
-                <label>
-                  <textarea readonly name="code" class="inline-code" cols="200" rows="10">[[${result}]]</textarea>
-                </label>
-              </div>
-            </form>
+            <a href="/basic">基礎編</a>
+            <a href="/db">DB編</a>
           </div>
         </main>
       </main>
