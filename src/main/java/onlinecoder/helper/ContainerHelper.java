@@ -71,12 +71,12 @@ public abstract class ContainerHelper {
   }
 
   public String execCompile(String className) throws DockerException, InterruptedException {
-    String execCommand = String.format("javac -classpath /tmp:postgresql-42.2.21.jar /tmp/%s.java", className);
+    String execCommand = String.format("javac /tmp/%s.java", className);
     return this.execInContainer(execCommand);
   }
 
   public String execCompiledCode(String className) throws DockerException, InterruptedException {
-    String execCommand = String.format("java -classpath /tmp:postgresql-42.2.22.jar %s", className);
+    String execCommand = String.format("java -classpath /tmp %s", className);
     return this.execInContainer(execCommand);
   }
 
@@ -85,7 +85,7 @@ public abstract class ContainerHelper {
   }
 
 
-  private String execInContainer(String execCommand) throws DockerException, InterruptedException {
+  protected String execInContainer(String execCommand) throws DockerException, InterruptedException {
     final String[] command = {"sh", "-c", execCommand};
     final ExecCreation execCreation = docker.execCreate(
             containerId, command, DockerClient.ExecCreateParam.attachStdout(),
