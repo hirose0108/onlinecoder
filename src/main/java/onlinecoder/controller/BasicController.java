@@ -8,10 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,13 +37,11 @@ public class BasicController {
   public String compile(HttpServletRequest request, ModelMap modelMap) {
     String result = "";
     String code = request.getParameter("code");
+    String stdin = request.getParameter("stdin");
 
     try {
-      FileWriter file = new FileWriter(filepath + "/Test.java");
-      PrintWriter pw = new PrintWriter(new BufferedWriter(file));
-
-      pw.println(code);
-      pw.close();
+      Files.write(Paths.get(filepath, "Test.java"), code.getBytes());
+      Files.write(Paths.get(filepath, "stdin"), stdin.getBytes());
 
       ContainerHelper containerHelper = new BasicContainerHelper();
       containerHelper.startContainer();
@@ -58,6 +55,7 @@ public class BasicController {
       result = "コンパイルに失敗しました。\n" + e.getMessage();
     }
     modelMap.addAttribute("code", code);
+    modelMap.addAttribute("stdin", stdin);
     modelMap.addAttribute("result", result);
     return "basic";
   }

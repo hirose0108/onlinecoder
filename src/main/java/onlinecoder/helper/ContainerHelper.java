@@ -76,7 +76,7 @@ public abstract class ContainerHelper {
   }
 
   public String execCompiledCode(String className) throws DockerException, InterruptedException {
-    String execCommand = String.format("java -classpath /tmp %s", className);
+    String execCommand = String.format("java -classpath /tmp %s < /tmp/stdin", className);
     return this.execInContainer(execCommand);
   }
 

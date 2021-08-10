@@ -25,8 +25,15 @@
           </div>
           <input type="submit" value="compile"/>
           <div class="m-login-login">
+            stdin<br />
             <label>
-              <textarea readonly name="code" class="inline-code" cols="200" rows="10">[[${result}]]</textarea>
+              <textarea name="stdin" class="inline-code" cols="200" rows="5">[[${stdin}]]</textarea>
+            </label>
+          </div>
+          <div class="m-login-login">
+            Result<br />
+            <label>
+              <textarea readonly name="result" class="inline-code" cols="200" rows="10">[[${result}]]</textarea>
             </label>
           </div>
         </form>
